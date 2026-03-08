@@ -1,53 +1,44 @@
 import { useState, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, Star, CheckCircle, Filter, MapPin, X } from "lucide-react";
+import { Search, Filter, MapPin, X, Mail, Phone, Globe, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { providers, countries, services } from "@/data/mockData";
+import { providers, countries } from "@/data/mockData";
 
 const Providers = () => {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [countryFilter, setCountryFilter] = useState(searchParams.get("country") || "all");
-  const [serviceFilter, setServiceFilter] = useState(searchParams.get("service") || "all");
 
   const filtered = useMemo(() => {
     return providers.filter((p) => {
-      const matchSearch = !search || p.companyName.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
+      const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.email.toLowerCase().includes(search.toLowerCase()) || p.services.toLowerCase().includes(search.toLowerCase());
       const matchCountry = countryFilter === "all" || p.country === countryFilter;
-      const matchService = serviceFilter === "all" || p.services.includes(serviceFilter);
-      return matchSearch && matchCountry && matchService;
+      return matchSearch && matchCountry;
     });
-  }, [search, countryFilter, serviceFilter]);
+  }, [search, countryFilter]);
 
   const clearFilters = () => {
     setSearch("");
     setCountryFilter("all");
-    setServiceFilter("all");
   };
 
-  const hasFilters = search || countryFilter !== "all" || serviceFilter !== "all";
+  const hasFilters = search || countryFilter !== "all";
 
   return (
     <div className="py-10">
       <div className="container">
-        {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-foreground">Find Consulting Providers</h1>
-          <p className="text-muted-foreground">Browse verified professionals across {countries.length} countries</p>
+          <h1 className="mb-2 text-3xl font-bold text-foreground">Find Service Providers</h1>
+          <p className="text-muted-foreground">Browse providers across {countries.length} countries</p>
         </div>
 
         {/* Filters */}
         <div className="mb-8 flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-corporate sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search providers..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10"
-            />
+            <Input placeholder="Search by name, email, or services..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10" />
           </div>
           <Select value={countryFilter} onValueChange={setCountryFilter}>
             <SelectTrigger className="w-full sm:w-48">
@@ -60,17 +51,6 @@ const Providers = () => {
               ))}
             </SelectContent>
           </Select>
-          <Select value={serviceFilter} onValueChange={setServiceFilter}>
-            <SelectTrigger className="w-full sm:w-52">
-              <SelectValue placeholder="All Services" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Services</SelectItem>
-              {services.map((s) => (
-                <SelectItem key={s.id} value={s.name}>{s.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           {hasFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters}>
               <X className="mr-1 h-4 w-4" /> Clear
@@ -78,45 +58,56 @@ const Providers = () => {
           )}
         </div>
 
-        {/* Results */}
         <p className="mb-4 text-sm text-muted-foreground">{filtered.length} provider{filtered.length !== 1 ? "s" : ""} found</p>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((provider) => (
-            <Link
+            <div
               key={provider.id}
-              to={`/providers/${provider.id}`}
               className="group rounded-xl border border-border bg-card p-6 shadow-corporate transition-all hover:border-accent/40"
             >
-              <div className="mb-4 flex items-start justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-                  {provider.logo}
+              <div className="mb-3 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                  {provider.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
                 </div>
-                {provider.verified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent">
-                    <CheckCircle className="h-3 w-3" /> Verified
-                  </span>
+                <div>
+                  <h3 className="font-semibold text-card-foreground">{provider.name}</h3>
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3" /> {provider.country}
+                  </p>
+                </div>
+              </div>
+
+              {provider.address && (
+                <p className="mb-2 text-xs text-muted-foreground">{provider.address}</p>
+              )}
+
+              {provider.services && (
+                <div className="mb-3 flex flex-wrap gap-1.5">
+                  {provider.services.split(",").map((s) => (
+                    <span key={s.trim()} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{s.trim()}</span>
+                  ))}
+                </div>
+              )}
+
+              <div className="space-y-1.5 border-t border-border pt-3">
+                {provider.email && (
+                  <a href={`mailto:${provider.email}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
+                    <Mail className="h-3 w-3" /> {provider.email}
+                  </a>
+                )}
+                {provider.contact && provider.contact !== "-" && provider.contact !== "N/A" && (
+                  <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Phone className="h-3 w-3" /> {provider.contact}
+                  </p>
+                )}
+                {provider.website && (
+                  <a href={provider.website.startsWith("http") ? provider.website : `https://${provider.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
+                    <Globe className="h-3 w-3" /> Website <ExternalLink className="h-2.5 w-2.5" />
+                  </a>
                 )}
               </div>
-              <h3 className="mb-1 font-semibold text-card-foreground group-hover:text-accent transition-colors">{provider.companyName}</h3>
-              <p className="mb-2 flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin className="h-3 w-3" /> {provider.country} · {provider.industry}
-              </p>
-              <p className="mb-3 text-sm text-muted-foreground line-clamp-2">{provider.description}</p>
-              <div className="mb-3 flex flex-wrap gap-1.5">
-                {provider.services.map((s) => (
-                  <span key={s} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{s}</span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between border-t border-border pt-3">
-                <div className="flex items-center gap-1 text-sm">
-                  <Star className="h-4 w-4 fill-accent text-accent" />
-                  <span className="font-medium text-foreground">{provider.rating}</span>
-                  <span className="text-muted-foreground">({provider.reviewCount})</span>
-                </div>
-                <span className="text-xs text-muted-foreground">{provider.experience}+ years</span>
-              </div>
-            </Link>
+            </div>
           ))}
         </div>
 
