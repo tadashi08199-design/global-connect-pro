@@ -1,15 +1,11 @@
 /**
- * Masks a provider name so the user gets a gist but not the full name.
- * e.g. "Sankalp Pratap Singh" → "Sa***p Pr***p Si***"
+ * Masks a provider name to show only the first name with partial masking.
+ * e.g. "Sankalp Pratap Singh" → "Sa***p"
  *       "Jane" → "Ja**"
  */
 export function maskName(name: string): string {
-  return name
-    .split(" ")
-    .map((word) => {
-      if (word.length <= 2) return word;
-      if (word.length <= 4) return word.slice(0, 2) + "**";
-      return word.slice(0, 2) + "***" + word.slice(-1);
-    })
-    .join(" ");
+  const firstName = name.split(" ")[0];
+  if (firstName.length <= 2) return firstName;
+  if (firstName.length <= 4) return firstName.slice(0, 2) + "**";
+  return firstName.slice(0, 2) + "***" + firstName.slice(-1);
 }
