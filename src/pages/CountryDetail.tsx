@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Scale, Calculator, Shield, Download } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Globe, ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { countries, providers } from "@/data/mockData";
 
@@ -31,70 +31,52 @@ const CountryDetail = () => {
           <span className="text-5xl">{country.flag}</span>
           <div>
             <h1 className="text-3xl font-bold text-foreground">{country.name}</h1>
-            <p className="text-muted-foreground">{country.providerCount} verified providers</p>
+            <p className="text-muted-foreground">{country.providerCount} provider{country.providerCount !== 1 ? "s" : ""}</p>
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {/* Legal */}
-          <div className="rounded-xl border border-border bg-card p-6 shadow-corporate">
-            <div className="mb-4 flex items-center gap-2">
-              <Scale className="h-5 w-5 text-accent" />
-              <h2 className="text-lg font-semibold text-card-foreground">Legal Requirements</h2>
-            </div>
-            <ul className="space-y-3">
-              {country.regulations.legal.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground border-l-2 border-accent/30 pl-3">{item}</li>
-              ))}
-            </ul>
+        {countryProviders.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            {countryProviders.map((p) => (
+              <div key={p.id} className="rounded-xl border border-border bg-card p-5 shadow-corporate">
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                    {p.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-card-foreground">{p.name}</h3>
+                    {p.address && <p className="text-xs text-muted-foreground">{p.address}</p>}
+                  </div>
+                </div>
+                {p.services && (
+                  <div className="mb-3 flex flex-wrap gap-1.5">
+                    {p.services.split(",").map((s) => (
+                      <span key={s.trim()} className="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground">{s.trim()}</span>
+                    ))}
+                  </div>
+                )}
+                <div className="space-y-1.5 border-t border-border pt-3">
+                  {p.email && (
+                    <a href={`mailto:${p.email}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
+                      <Mail className="h-3 w-3" /> {p.email}
+                    </a>
+                  )}
+                  {p.contact && p.contact !== "-" && p.contact !== "N/A" && (
+                    <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Phone className="h-3 w-3" /> {p.contact}
+                    </p>
+                  )}
+                  {p.website && (
+                    <a href={p.website.startsWith("http") ? p.website : `https://${p.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
+                      <Globe className="h-3 w-3" /> Website <ExternalLink className="h-2.5 w-2.5" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-
-          {/* Tax */}
-          <div className="rounded-xl border border-border bg-card p-6 shadow-corporate">
-            <div className="mb-4 flex items-center gap-2">
-              <Calculator className="h-5 w-5 text-accent" />
-              <h2 className="text-lg font-semibold text-card-foreground">Tax Information</h2>
-            </div>
-            <ul className="space-y-3">
-              {country.regulations.tax.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground border-l-2 border-accent/30 pl-3">{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Compliance */}
-          <div className="rounded-xl border border-border bg-card p-6 shadow-corporate">
-            <div className="mb-4 flex items-center gap-2">
-              <Shield className="h-5 w-5 text-accent" />
-              <h2 className="text-lg font-semibold text-card-foreground">Compliance</h2>
-            </div>
-            <ul className="space-y-3">
-              {country.regulations.compliance.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground border-l-2 border-accent/30 pl-3">{item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-xl border border-border bg-muted p-6 text-center">
-          <Download className="mx-auto mb-2 h-6 w-6 text-accent" />
-          <h3 className="font-semibold text-foreground">Country Regulation Guide</h3>
-          <p className="mb-3 text-sm text-muted-foreground">Download the full regulatory guide for {country.name}</p>
-          <Button variant="outline" size="sm">Download PDF</Button>
-        </div>
-
-        {countryProviders.length > 0 && (
-          <div className="mt-10">
-            <h2 className="mb-4 text-xl font-semibold text-foreground">Providers in {country.name}</h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              {countryProviders.map((p) => (
-                <Link key={p.id} to={`/providers/${p.id}`} className="rounded-lg border border-border bg-card p-4 hover:border-accent/40 transition-colors">
-                  <h3 className="font-semibold text-card-foreground">{p.companyName}</h3>
-                  <p className="text-xs text-muted-foreground">{p.services.join(" · ")}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
+        ) : (
+          <div className="py-10 text-center text-muted-foreground">No providers listed for this country yet.</div>
         )}
       </div>
     </div>
