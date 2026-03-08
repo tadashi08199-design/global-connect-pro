@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
-import { MapPin, ArrowLeft, Mail, Phone, Globe, ExternalLink } from "lucide-react";
+import { MapPin, ArrowLeft, Mail, Phone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { providers } from "@/data/mockData";
+import { maskName } from "@/lib/providerUtils";
 
 const ProviderDetail = () => {
   const { id } = useParams();
