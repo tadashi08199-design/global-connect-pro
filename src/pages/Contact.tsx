@@ -16,8 +16,8 @@ const Contact = () => (
         <div className="space-y-6 md:col-span-1">
           {[
             { icon: Mail, label: "Email", value: "info@consullink.com" },
-            { icon: Phone, label: "Phone", value: "+1 (555) 123-4567" },
-            { icon: MapPin, label: "Address", value: "Dubai, UAE" },
+            { icon: Phone, label: "Phone", value: "+91 8341727278" },
+            { icon: MapPin, label: "Address", value: "Hyderabad, India" },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-start gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10">
