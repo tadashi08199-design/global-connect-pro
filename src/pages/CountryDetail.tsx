@@ -45,8 +45,7 @@ const CountryDetail = () => {
                     {p.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-card-foreground">{p.name}</h3>
-                    {p.address && <p className="text-xs text-muted-foreground">{p.address}</p>}
+                    <h3 className="font-semibold text-card-foreground">{maskName(p.name)}</h3>
                   </div>
                 </div>
                 {p.services && (
@@ -57,21 +56,15 @@ const CountryDetail = () => {
                   </div>
                 )}
                 <div className="space-y-1.5 border-t border-border pt-3">
-                  {p.email && (
-                    <a href={`mailto:${p.email}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
-                      <Mail className="h-3 w-3" /> {p.email}
-                    </a>
-                  )}
-                  {p.contact && p.contact !== "-" && p.contact !== "N/A" && (
-                    <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Phone className="h-3 w-3" /> {p.contact}
-                    </p>
-                  )}
-                  {p.website && (
-                    <a href={p.website.startsWith("http") ? p.website : `https://${p.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
-                      <Globe className="h-3 w-3" /> Website <ExternalLink className="h-2.5 w-2.5" />
-                    </a>
-                  )}
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Mail className="h-3 w-3" /> <span className="blur-sm select-none">hidden@email.com</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Phone className="h-3 w-3" /> <span className="blur-sm select-none">+XX XXXX XXXX</span>
+                  </div>
+                  <p className="mt-2 text-xs text-accent font-medium">
+                    <Link to="/register" className="hover:underline">Subscribe to view full details →</Link>
+                  </p>
                 </div>
               </div>
             ))}
