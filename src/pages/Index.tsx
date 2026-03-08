@@ -3,6 +3,7 @@ import { Search, ArrowRight, Shield, Globe, Users, Star, MapPin } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { providers, countries } from "@/data/mockData";
+import { maskName } from "@/lib/providerUtils";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useState } from "react";
 
@@ -113,7 +114,7 @@ const Index = () => {
                     {provider.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-card-foreground group-hover:text-accent transition-colors">{provider.name}</h3>
+                    <h3 className="font-semibold text-card-foreground group-hover:text-accent transition-colors">{maskName(provider.name)}</h3>
                     <p className="flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPin className="h-3 w-3" /> {provider.country}
                     </p>
