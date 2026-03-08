@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Mail, Phone, Globe, ExternalLink, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { countries, providers } from "@/data/mockData";
+import { maskName } from "@/lib/providerUtils";
 
 const CountryDetail = () => {
   const { id } = useParams();
