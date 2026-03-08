@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
-import { Search, ArrowRight, Shield, Globe, Users, Star, CheckCircle, Briefcase } from "lucide-react";
+import { Search, ArrowRight, Shield, Globe, Users, Star, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { providers, countries, services } from "@/data/mockData";
+import { providers, countries } from "@/data/mockData";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useState } from "react";
 
 const stats = [
-  { value: "500+", label: "Verified Providers" },
-  { value: "25+", label: "Countries Covered" },
+  { value: `${providers.length}+`, label: "Service Providers" },
+  { value: `${countries.length}`, label: "Countries Covered" },
   { value: "10K+", label: "Consultations" },
   { value: "98%", label: "Client Satisfaction" },
 ];
 
 const howItWorks = [
-  { step: "01", title: "Search & Discover", description: "Browse verified consulting providers filtered by country, service type, and industry expertise.", icon: Search },
-  { step: "02", title: "Review & Compare", description: "View detailed profiles, certifications, client reviews, and track records before deciding.", icon: Star },
-  { step: "03", title: "Connect & Engage", description: "Send consultation requests directly and start working with your chosen provider.", icon: Users },
+  { step: "01", title: "Search & Discover", description: "Browse service providers filtered by country and services.", icon: Search },
+  { step: "02", title: "Review & Compare", description: "View contact details, services offered, and coverage areas.", icon: Star },
+  { step: "03", title: "Connect & Engage", description: "Reach out directly via email or phone to start working together.", icon: Users },
 ];
 
 const Index = () => {
@@ -26,35 +26,24 @@ const Index = () => {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-hero py-24 md:py-32">
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{ backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center" }}
-        />
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-dark/60 to-navy/90" />
-
         <div className="container relative z-10">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-sm text-accent">
-              <Globe className="h-4 w-4" /> Trusted by businesses in 25+ countries
+              <Globe className="h-4 w-4" /> Providers in {countries.length} countries
             </div>
             <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-primary-foreground md:text-5xl lg:text-6xl">
-              Find Expert Consultants{" "}
+              Find Service Providers{" "}
               <span className="text-gradient-gold">Worldwide</span>
             </h1>
             <p className="mb-10 text-lg text-primary-foreground/70 md:text-xl">
-              Connect with verified consulting professionals across multiple countries.
-              Navigate regulations, scale your business, and achieve success globally.
+              Connect with service providers across multiple countries. Navigate regulations, scale your business, and achieve success globally.
             </p>
-
             <div className="mx-auto flex max-w-xl flex-col gap-3 sm:flex-row">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Search providers, services, countries..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="h-12 border-0 bg-surface pl-10 text-foreground shadow-corporate"
-                />
+                <Input placeholder="Search providers, countries..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="h-12 border-0 bg-surface pl-10 text-foreground shadow-corporate" />
               </div>
               <Button size="lg" className="h-12 bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold" asChild>
                 <Link to={`/providers${searchQuery ? `?q=${searchQuery}` : ""}`}>
@@ -78,36 +67,12 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="py-20">
-        <div className="container">
-          <div className="mb-12 text-center">
-            <h2 className="mb-3 text-3xl font-bold text-foreground">Consulting Services</h2>
-            <p className="text-muted-foreground">Expert advisory across key business functions</p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((service) => (
-              <Link
-                key={service.id}
-                to={`/providers?service=${encodeURIComponent(service.name)}`}
-                className="group rounded-xl border border-border bg-card p-6 shadow-corporate transition-all hover:border-accent/40 hover:shadow-gold/10"
-              >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-                  <Briefcase className="h-5 w-5" />
-                </div>
-                <h3 className="text-sm font-semibold text-card-foreground">{service.name}</h3>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section id="how-it-works" className="bg-muted py-20">
         <div className="container">
           <div className="mb-12 text-center">
             <h2 className="mb-3 text-3xl font-bold text-foreground">How It Works</h2>
-            <p className="text-muted-foreground">Three simple steps to find your ideal consulting partner</p>
+            <p className="text-muted-foreground">Three simple steps to find your ideal service provider</p>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
             {howItWorks.map((item) => (
@@ -130,40 +95,33 @@ const Index = () => {
           <div className="mb-12 flex items-end justify-between">
             <div>
               <h2 className="mb-3 text-3xl font-bold text-foreground">Featured Providers</h2>
-              <p className="text-muted-foreground">Top-rated consulting firms trusted by our clients</p>
+              <p className="text-muted-foreground">Service providers from our network</p>
             </div>
             <Button variant="outline" asChild className="hidden md:inline-flex">
               <Link to="/providers">View All <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {providers.slice(0, 3).map((provider) => (
+            {providers.slice(0, 6).map((provider) => (
               <Link
                 key={provider.id}
                 to={`/providers/${provider.id}`}
                 className="group rounded-xl border border-border bg-card p-6 shadow-corporate transition-all hover:border-accent/40"
               >
-                <div className="mb-4 flex items-start justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-                    {provider.logo}
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
+                    {provider.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
                   </div>
-                  {provider.verified && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent">
-                      <CheckCircle className="h-3 w-3" /> Verified
-                    </span>
-                  )}
-                </div>
-                <h3 className="mb-1 font-semibold text-card-foreground group-hover:text-accent transition-colors">{provider.companyName}</h3>
-                <p className="mb-3 text-xs text-muted-foreground">{provider.country} · {provider.industry}</p>
-                <p className="mb-4 text-sm text-muted-foreground line-clamp-2">{provider.description}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-sm">
-                    <Star className="h-4 w-4 fill-accent text-accent" />
-                    <span className="font-medium text-foreground">{provider.rating}</span>
-                    <span className="text-muted-foreground">({provider.reviewCount})</span>
+                  <div>
+                    <h3 className="font-semibold text-card-foreground group-hover:text-accent transition-colors">{provider.name}</h3>
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <MapPin className="h-3 w-3" /> {provider.country}
+                    </p>
                   </div>
-                  <span className="text-xs text-muted-foreground">{provider.experience}+ years</span>
                 </div>
+                {provider.services && (
+                  <p className="text-xs text-muted-foreground line-clamp-2">{provider.services}</p>
+                )}
               </Link>
             ))}
           </div>
@@ -180,7 +138,7 @@ const Index = () => {
         <div className="container">
           <div className="mb-12 text-center">
             <h2 className="mb-3 text-3xl font-bold text-primary-foreground">Countries We Cover</h2>
-            <p className="text-primary-foreground/60">Detailed regulations and verified providers in each market</p>
+            <p className="text-primary-foreground/60">Service providers available in these markets</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {countries.map((country) => (
@@ -204,9 +162,7 @@ const Index = () => {
           <div className="mx-auto max-w-2xl rounded-2xl bg-card p-10 text-center shadow-corporate md:p-16">
             <Shield className="mx-auto mb-4 h-10 w-10 text-accent" />
             <h2 className="mb-3 text-3xl font-bold text-card-foreground">Ready to Get Started?</h2>
-            <p className="mb-8 text-muted-foreground">
-              Join thousands of businesses finding the right consulting partners through ConsulLink.
-            </p>
+            <p className="mb-8 text-muted-foreground">Join businesses finding the right service providers through ConsulLink.</p>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" asChild>
                 <Link to="/register">Create Free Account</Link>
