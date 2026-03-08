@@ -33,13 +33,10 @@ const ProviderDetail = () => {
                 {provider.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-card-foreground">{provider.name}</h1>
+                <h1 className="text-2xl font-bold text-card-foreground">{maskName(provider.name)}</h1>
                 <p className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
                   <MapPin className="h-3.5 w-3.5" /> {provider.country}
                 </p>
-                {provider.address && (
-                  <p className="mt-1 text-sm text-muted-foreground">{provider.address}</p>
-                )}
               </div>
             </div>
           </div>
@@ -56,25 +53,13 @@ const ProviderDetail = () => {
               </div>
             )}
 
-            <div>
-              <h2 className="mb-3 text-lg font-semibold text-card-foreground">Contact Information</h2>
-              <div className="space-y-3">
-                {provider.email && (
-                  <a href={`mailto:${provider.email}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-accent transition-colors">
-                    <Mail className="h-4 w-4" /> {provider.email}
-                  </a>
-                )}
-                {provider.contact && provider.contact !== "-" && provider.contact !== "N/A" && (
-                  <p className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Phone className="h-4 w-4" /> {provider.contact}
-                  </p>
-                )}
-                {provider.website && (
-                  <a href={provider.website.startsWith("http") ? provider.website : `https://${provider.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-accent transition-colors">
-                    <Globe className="h-4 w-4" /> {provider.website} <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
+            <div className="rounded-lg border border-border bg-muted/50 p-6 text-center">
+              <Lock className="mx-auto mb-3 h-8 w-8 text-muted-foreground/60" />
+              <h2 className="mb-1 text-lg font-semibold text-card-foreground">Contact Details Hidden</h2>
+              <p className="mb-4 text-sm text-muted-foreground">Subscribe to view full contact information including email, phone, and website.</p>
+              <Button asChild>
+                <Link to="/register">Subscribe to View Details</Link>
+              </Button>
             </div>
           </div>
         </div>

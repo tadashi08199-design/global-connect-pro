@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, Filter, MapPin, X, Mail, Phone, Globe, ExternalLink } from "lucide-react";
+import { Search, Filter, MapPin, X, Mail, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
