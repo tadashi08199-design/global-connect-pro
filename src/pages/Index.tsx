@@ -3,6 +3,7 @@ import { Search, ArrowRight, Shield, Globe, Users, Star, MapPin } from "lucide-r
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { providers, countries } from "@/data/mockData";
+import { maskName } from "@/lib/providerUtils";
 import heroBg from "@/assets/hero-bg.jpg";
 import { useState } from "react";
 
