@@ -42,7 +42,7 @@ const Footer = () => (
         <div>
           <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-accent">Contact</h4>
           <ul className="space-y-2.5 text-sm text-primary-foreground/60">
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-accent" /> info@consullink.com</li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4 text-accent" /> info.consullink@gmail.com</li>
             <li className="flex items-center gap-2"><Phone className="h-4 w-4 text-accent" /> +91 8341727278</li>
             <li className="flex items-center gap-2"><MapPin className="h-4 w-4 text-accent" /> Hyderabad, India</li>
           </ul>
