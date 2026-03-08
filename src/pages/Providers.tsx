@@ -1,10 +1,11 @@
 import { useState, useMemo } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search, Filter, MapPin, X, Mail, Phone, Globe, ExternalLink } from "lucide-react";
+import { Search, Filter, MapPin, X, Mail, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { providers, countries } from "@/data/mockData";
+import { maskName } from "@/lib/providerUtils";
 
 const Providers = () => {
   const [searchParams] = useSearchParams();
@@ -71,16 +72,12 @@ const Providers = () => {
                   {provider.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-card-foreground">{provider.name}</h3>
+                  <h3 className="font-semibold text-card-foreground">{maskName(provider.name)}</h3>
                   <p className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="h-3 w-3" /> {provider.country}
                   </p>
                 </div>
               </div>
-
-              {provider.address && (
-                <p className="mb-2 text-xs text-muted-foreground">{provider.address}</p>
-              )}
 
               {provider.services && (
                 <div className="mb-3 flex flex-wrap gap-1.5">
@@ -91,21 +88,15 @@ const Providers = () => {
               )}
 
               <div className="space-y-1.5 border-t border-border pt-3">
-                {provider.email && (
-                  <a href={`mailto:${provider.email}`} className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
-                    <Mail className="h-3 w-3" /> {provider.email}
-                  </a>
-                )}
-                {provider.contact && provider.contact !== "-" && provider.contact !== "N/A" && (
-                  <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Phone className="h-3 w-3" /> {provider.contact}
-                  </p>
-                )}
-                {provider.website && (
-                  <a href={provider.website.startsWith("http") ? provider.website : `https://${provider.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs text-muted-foreground hover:text-accent transition-colors">
-                    <Globe className="h-3 w-3" /> Website <ExternalLink className="h-2.5 w-2.5" />
-                  </a>
-                )}
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Mail className="h-3 w-3" /> <span className="blur-sm select-none">hidden@email.com</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Phone className="h-3 w-3" /> <span className="blur-sm select-none">+XX XXXX XXXX</span>
+                </div>
+                <p className="mt-2 text-xs text-accent font-medium">
+                  <Link to="/register" className="hover:underline">Subscribe to view full details →</Link>
+                </p>
               </div>
             </div>
           ))}
